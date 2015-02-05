@@ -8,6 +8,11 @@ namespace HoneyBooks.Controllers
 {
     public class BooksController : Controller
     {
+        public ActionResult Browse()
+        {
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();
