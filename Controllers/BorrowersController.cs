@@ -15,7 +15,7 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to delete a borrower
-        public void Delete()
+        public void Delete(int id)
         {
 
         }
@@ -39,7 +39,7 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to update a borrower
-        public ActionResult Update()
+        public ActionResult Update(int id)
         {
             return View();
         }
