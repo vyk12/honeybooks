@@ -5,6 +5,20 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    @RenderBody()
+    <header>
+        <h1>HoneyBooks</h1>
+
+        <nav>
+            <ul>
+                <li>@Html.ActionLink("Browse books list", "Browse", "Books")</li>
+                <li>@Html.ActionLink("Look for a book", "Search", "Books")</li>
+                <li>@Html.ActionLink("Borrowers home page", "Index", "Borrowers")</li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        @RenderBody()
+    </section>
 </body>
 </html>
