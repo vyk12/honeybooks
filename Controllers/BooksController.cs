@@ -17,5 +17,10 @@ namespace HoneyBooks.Controllers
         {
             return View();
         }
+
+        public ActionResult SearchResults()
+        {
+            return View("Search");
+        }
     }
 }

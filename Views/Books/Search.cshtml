@@ -2,8 +2,8 @@
     ViewBag.Title = "Search";
 }
 
-<h2>Search</h2>
-@using (Html.BeginForm("Result", "Books", FormMethod.Get))
+<h2>Looking for books ?</h2>
+@using (Html.BeginForm("SearchResults", "Books", FormMethod.Get))
 {
     <text>Your request : </text>@Html.TextBox("query");<br />
     <text>Search by : </text> <select name="op">
