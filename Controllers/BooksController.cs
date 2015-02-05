@@ -13,6 +13,12 @@ namespace HoneyBooks.Controllers
             return View();
         }
 
+        public ActionResult Details(int id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();
