@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add an author</h2>
+@using (Html.BeginForm("Add", "Author", FormMethod.Post))
+{
+    <text>Author's name : </text> @Html.TextBox("author");<br />
+    
+    <input type="submit" value="Add the author" />
+}

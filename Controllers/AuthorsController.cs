@@ -6,11 +6,16 @@ using System.Web.Mvc;
 
 namespace HoneyBooks.Controllers
 {
-    public class BorrowersController : Controller
+    public class AuthorsController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Add()
         {
             return View();
+        }
+
+        public void Delete(int id)
+        {
+            
         }
 
         public ActionResult List()
@@ -18,8 +23,9 @@ namespace HoneyBooks.Controllers
             return View();
         }
 
-        public ActionResult RenewLoan()
+        public ActionResult Update(int id)
         {
+            ViewBag.id = id;
             return View();
         }
     }
