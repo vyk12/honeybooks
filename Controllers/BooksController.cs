@@ -8,9 +8,6 @@ namespace HoneyBooks.Controllers
 {
     public class BooksController : Controller
     {
-        //
-        // GET: /Books/
-
         public ActionResult Index()
         {
             return View();
