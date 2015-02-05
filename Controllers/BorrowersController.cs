@@ -8,10 +8,10 @@ namespace HoneyBooks.Controllers
 {
     public class BorrowersController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
+            ViewBag.id = id;
             return View();
         }
-
     }
 }
