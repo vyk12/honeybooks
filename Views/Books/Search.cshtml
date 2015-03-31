@@ -3,12 +3,17 @@
 }
 
 <h2>Looking for books ?</h2>
-@using (Html.BeginForm("SearchResults", "Books", FormMethod.Get))
+@using (Html.BeginForm("Search", "Books", FormMethod.Get))
 {
     <text>Your request : </text>@Html.TextBox("query");<br />
-    <text>Search by : </text> <select name="op">
-        <option value="title">Title</option>
-        <option value="author">Author</option>
+    <text>Search by : </text> <select name="searchBy">
+        <option value="0">Title</option>
+        <option value="1">Author</option>
     </select><br />
     <input type="submit" value="Search" />
+}
+
+@foreach (var book in ViewBag.books)
+{
+    @book.Title<text><br /></text>
 }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BL;
 
 namespace HoneyBooks.Controllers
 {
     public class BooksController : Controller
     {
-        //Action to add a book
+        // Action to add a book
         public ActionResult Add()
         {
             return View();
@@ -36,12 +37,20 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.books = Book.getAll();
+
             return View();
         }
 
         // Action to look for a book (either by title or author)
         public ActionResult Search()
         {
+            int searchBy = Convert.ToInt32(Request.QueryString.Get("searchBy"));
+
+            if (searchBy != 0 && searchBy != 1) searchBy = 0;
+
+            ViewBag.books = Book.search(Request.QueryString.Get("query"), searchBy);
+
             return View();
         }
 
