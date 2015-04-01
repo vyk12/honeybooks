@@ -32,3 +32,6 @@ C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\fr\System.Web.Http.WebH
 C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Web.Http.dll
 C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Web.Http.xml
 C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\fr\System.Web.Http.resources.dll
+C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Net.Http.Formatting.dll
+C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Net.Http.Formatting.xml
+C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\fr\System.Net.Http.Formatting.resources.dll
