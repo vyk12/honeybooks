@@ -29,3 +29,6 @@ C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\obj\Debug\HoneyBooks.pdb
 C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Web.Http.WebHost.dll
 C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Web.Http.WebHost.xml
 C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\fr\System.Web.Http.WebHost.resources.dll
+C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Web.Http.dll
+C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\System.Web.Http.xml
+C:\Users\Victor\ProjetsASP.NET\HoneyBooks\HoneyBooks\bin\fr\System.Web.Http.resources.dll
