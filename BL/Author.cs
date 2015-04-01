@@ -35,17 +35,20 @@ namespace BL
             get { return this._LastName; }
             set { this._LastName = value; }
         }
+        [Display(Name = "Author ID")]
         public int Aid
         {
             get { return (int)this._Aid; }
             set { this._Aid = value; }
         }
+        [Display(Name = "Birth year")]
         public int BirthYear
         {
             get { return this._BirthYear; }
             set { this._BirthYear = value; }
         }
         private string _About;
+        [Display(Name = "About")]
         public string About
         {
             get
@@ -55,6 +58,28 @@ namespace BL
             set { this._About = value; }
         }
 
+        public void delete()
+        {
+            SqlConnection con = new SqlConnection(Settings.ConnectionString);
+
+            SqlCommand cmdDelBookAuthor = new SqlCommand("DELETE FROM BOOK_AUTHOR WHERE Aid = " + this._Aid, con);
+            SqlCommand cmdDelAuthor = new SqlCommand("DELETE FROM AUTHOR WHERE Aid = " + this._Aid, con);
+
+            try
+            {
+                con.Open();
+                cmdDelBookAuthor.ExecuteScalar();
+                cmdDelAuthor.ExecuteScalar();
+            }
+            catch (Exception er)
+            {
+                throw er;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public List<Book> getBooks()
         {
             return Book.getByAuthor(this._Aid);

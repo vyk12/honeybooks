@@ -2,4 +2,21 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details about book nr. @ViewBag.id</h2>
+<h2>Details</h2>
+<p>
+    Title : @ViewBag.book.Title<br />
+    Author : @ViewBag.book.Author<br />
+    ISBN : @ViewBag.book.ISBN<br />
+    Pages : @ViewBag.book.Pages<br />
+    Publication year :
+    @if (ViewBag.book.PublicationYear == null)
+    {
+        <text>Unknown</text>
+    }
+    else
+    {
+        @ViewBag.book.PublicationYear
+    }
+    <br />
+    Publication info : @ViewBag.book.PublicationInfo<br />
+</p>

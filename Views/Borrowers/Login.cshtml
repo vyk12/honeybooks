@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+@if (ViewBag.error != null)
+{
+    <p>@ViewBag.error</p>
+}
+
+@using (Html.BeginForm("Login", "Borrowers", FormMethod.Post))
+{
+    <text>Username : </text> @Html.TextBox("username");<br />
+    <text>Password : </text> @Html.Password("password");<br />
+
+    <input type="submit" value="Log in" />
+}

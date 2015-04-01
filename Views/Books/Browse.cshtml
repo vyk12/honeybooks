@@ -6,3 +6,17 @@
 <p>
     Sort by : <a href="?sortby=title">Title</a> - <a href="?sortby=author">Author</a>
 </p>
+
+<table>
+    <tr>
+        <th>Author</th>
+        <th>Title</th>
+    </tr>
+    @foreach (var book in ViewBag.books)
+    {
+        <tr>
+            <td>@book.Author</td>
+            <td>@Html.ActionLink((string)book.Title, "Details", new { isbn = book.ISBN })</td>
+        </tr>
+    }
+</table>

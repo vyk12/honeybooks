@@ -2,11 +2,30 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Login</h2>
-@using (Html.BeginForm("Login", "Borrowers", FormMethod.Get))
+<h2>Home page</h2>
+<p>Welcome @ViewBag.borrower.FirstName !</p>
+
+@if (ViewBag.borrows.Count == 0)
 {
-    <text>Username : </text> @Html.TextBox("username");<br />
-    <text>Password : </text> @Html.Password("password");<br />
-    
-    <input type="submit" value="Log in" />
+    <p>You don't have any current borrowed books yet.</p>
+}
+else
+{
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Borrow date</th>
+        <th>To be returned</th>
+        <th>Operations</th>
+    </tr>
+    @foreach (var borrow in ViewBag.borrows)
+    {
+        <tr>
+            <td>@borrow.BookTitle</td>
+            <td>@borrow.BorrowDate.ToString("MM/dd/yyyy HH:mm")</td>
+            <td>@borrow.ToBeReturnedDate.ToString("MM/dd/yyyy HH:mm")</td>
+            <td>@Html.ActionLink("Renew the loan", "RenewLoan", new { barcode = borrow.Barcode })</td>
+        </tr>
+    }
+</table>
 }

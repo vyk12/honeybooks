@@ -18,6 +18,10 @@ namespace HoneyBooks.Controllers
         // Action to browse books (either by title or author)
         public ActionResult Browse()
         {
+            string sortBy = Request.QueryString.Get("sortby");
+
+            ViewBag.books = Book.getAll(sortBy == "author" ? 0 : 1);
+
             return View();
         }
 
@@ -28,28 +32,31 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to get details about a book
-        public ActionResult Details(int id)
+        public ActionResult Details(string isbn)
         {
-            ViewBag.id = id;
+            ViewBag.book = Book.getByISBN(isbn);
             return View();
         }
 
 
         public ActionResult Index()
         {
-            ViewBag.books = Book.getAll();
-
             return View();
         }
 
         // Action to look for a book (either by title or author)
         public ActionResult Search()
         {
-            int searchBy = Convert.ToInt32(Request.QueryString.Get("searchBy"));
+            string query = Request.QueryString.Get("query");
 
-            if (searchBy != 0 && searchBy != 1) searchBy = 0;
+            if (query != null)
+            {
+                int searchBy = Convert.ToInt32(Request.QueryString.Get("searchBy"));
 
-            ViewBag.books = Book.search(Request.QueryString.Get("query"), searchBy);
+                if (searchBy != 0 && searchBy != 1) searchBy = 0;
+
+                ViewBag.books = Book.search(query, searchBy);
+            }
 
             return View();
         }

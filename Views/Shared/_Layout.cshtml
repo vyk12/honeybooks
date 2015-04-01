@@ -13,6 +13,10 @@
                 <li>@Html.ActionLink("Browse books list", "Browse", "Books")</li>
                 <li>@Html.ActionLink("Look for a book", "Search", "Books")</li>
                 <li>@Html.ActionLink("Borrowers home page", "Index", "Borrowers")</li>
+                @if (Session["Borrower"] != null)
+                {
+                    <li>@Html.ActionLink("Log out", "Logout", "Borrowers")</li>
+                }
             </ul>
         </nav>
     </header>

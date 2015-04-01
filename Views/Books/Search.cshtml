@@ -13,7 +13,26 @@
     <input type="submit" value="Search" />
 }
 
-@foreach (var book in ViewBag.books)
+@if (ViewBag.books != null)
 {
-    @book.Title<text><br /></text>
+    if (ViewBag.books.Count == 0)
+    {
+        <p>Your query didn't match any existing book.</p>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+            </tr>
+            @foreach (var book in ViewBag.books)
+            {
+                <tr>
+                    <td>@book.Author</td>
+                    <td>@Html.ActionLink((string)book.Title, "Details", new { isbn = book.ISBN })</td>
+                </tr>
+            }
+        </table>
+    }
 }

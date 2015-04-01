@@ -109,6 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BL\Author.cs" />
+    <Compile Include="BL\Borrower.cs" />
+    <Compile Include="BL\Borrow.cs" />
+    <Compile Include="BL\Category.cs" />
     <Compile Include="BL\Settings.cs" />
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
@@ -162,19 +165,13 @@
     <Content Include="Views\Borrowers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Borrowers\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Borrowers\RenewLoan.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Authors\Add.cshtml" />
+    <Content Include="Views\Authors\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Authors\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Authors\Update.cshtml" />
+    <Content Include="Views\Authors\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Borrowers\Add.cshtml" />
@@ -187,6 +184,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Books\Update.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Borrowers\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authors\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authors\Details.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
