@@ -20,31 +20,50 @@ namespace BL
                        _author,
                        _publicationinfo,
                        _publicationYear;
-        private int _pages;
+        private int _pages,
+                    _signId;
 
+        [Display(Name = "Title")]
         public string Title
         {
             get { return this._title; }
+            set { this._title = value; }
         }
+        [Display(Name = "ISBN")]
         public string ISBN
         {
             get { return this._isbn; }
+            set { this._isbn = value; }
         }
+        [Display(Name = "Author")]
         public string Author
         {
             get { return this._author; }
+            set { this._author = value; }
         }
+        [Display(Name = "Publication Info")]
         public string PublicationInfo
         {
             get { return this._publicationinfo; }
+            set { this._publicationinfo = value; }
         }
+        [Display(Name = "Publication Year")]
         public string PublicationYear
         {
             get { return this._publicationYear; }
+            set { this._publicationYear = value; }
         }
+        [Display(Name = "Pages")]
         public int Pages
         {
             get { return this._pages; }
+            set { this._pages = value; }
+        }
+        [Display(Name = "Sign ID")]
+        public int SignId
+        {
+            get { return this._signId; }
+            set { this._signId = value; }
         }
         public static List<Book> search(string query, int byAuthor = 0)
         {
@@ -105,6 +124,10 @@ namespace BL
                     book._title = dar["Title"] as string;
                     book._isbn = dar["ISBN"] as string;
                     book._author = dar["FirstName"] + " " + dar["LastName"];
+                    book._publicationYear = dar["PublicationYear"] as string;
+                    book._publicationinfo = dar["publicationinfo"] as string;
+                    book._pages = Convert.ToInt32(dar["pages"]);
+                    book._signId = Convert.ToInt32(dar["signId"]);
                     results.Add(book);
                 }
             }
@@ -169,6 +192,7 @@ namespace BL
                 book._publicationYear = dar["PublicationYear"] as string;
                 book._publicationinfo = dar["publicationinfo"] as string;
                 book._pages = Convert.ToInt32(dar["pages"]);
+                book._signId = Convert.ToInt32(dar["signId"]);
                 book._author = dar["FirstName"] + " " + dar["LastName"];
             }
             catch (Exception er)
@@ -236,6 +260,56 @@ namespace BL
             }
 
             return result;
+        }
+
+        public int create()
+        {
+            SqlConnection con = new SqlConnection(Settings.ConnectionString);
+            SqlCommand cmd;
+            int retVal;
+
+            cmd = new SqlCommand("INSERT INTO BOOK (ISBN, Title, SignId, PublicationYear, publicationinfo, pages) VALUES " +
+                "('" + this._isbn + "', '" + this._title + "', " + this._signId + ",'" + this._publicationYear + "', " +
+                "'" + this._publicationinfo + "', " + this._pages + ")", con);
+
+            try
+            {
+                con.Open();
+                retVal = cmd.ExecuteNonQuery();
+            }
+            catch (Exception er)
+            {
+                throw er;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return retVal;
+        }
+
+        public void edit()
+        {
+            SqlConnection con = new SqlConnection(Settings.ConnectionString);
+            SqlCommand cmd;
+
+            cmd = new SqlCommand("UPDATE BOOK SET Title = '" + this._title + "', SignId = " + this._signId + ", " +
+                "PublicationYear = '" + this._publicationYear + "', publicationinfo = '" + this._publicationinfo + "', pages = " + this._pages + " " +
+                "WHERE ISBN = '" + this._isbn + "'", con);
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteScalar();
+            }
+            catch (Exception er)
+            {
+                throw er;
+            }
+            finally
+            {
+                con.Close();
+            }
         }
     }
 }

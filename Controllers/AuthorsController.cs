@@ -18,6 +18,10 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
 
             return View();
         }
@@ -28,6 +32,11 @@ namespace HoneyBooks.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
             try
             {
                 BL.Author author = new BL.Author();
@@ -58,6 +67,11 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Edit(int id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
             return View(BL.Author.getByAid(id));
         }
 
@@ -67,6 +81,11 @@ namespace HoneyBooks.Controllers
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
             try
             {
                 BL.Author author = BL.Author.getByAid(id);
@@ -75,7 +94,6 @@ namespace HoneyBooks.Controllers
                 author.FirstName = collection["FirstName"];
                 author.LastName = collection["LastName"];
                 author.save();
-                // TODO: Add update logic here
 
                 return RedirectToAction("Index");
             }
@@ -90,6 +108,11 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Delete(int id)
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
             BL.Author author = BL.Author.getByAid(id);
 
             List<BL.Book> books = author.getBooks();

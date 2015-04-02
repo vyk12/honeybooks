@@ -112,13 +112,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BL\Author.cs" />
+    <Compile Include="BL\BookAuthor.cs" />
     <Compile Include="BL\Borrower.cs" />
     <Compile Include="BL\Borrow.cs" />
     <Compile Include="BL\Category.cs" />
     <Compile Include="BL\Settings.cs" />
+    <Compile Include="BL\User.cs" />
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
     <Compile Include="Controllers\BorrowersController.cs" />
+    <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -168,25 +171,22 @@
     <Content Include="Views\Borrowers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Borrowers\RenewLoan.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Authors\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Authors\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Borrowers\Add.cshtml" />
+    <Content Include="Views\Borrowers\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Borrowers\Update.cshtml" />
+    <Content Include="Views\Borrowers\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Books\Add.cshtml" />
+    <Content Include="Views\Books\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Books\Update.cshtml" />
+    <Content Include="Views\Books\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Borrowers\Login.cshtml" />
@@ -196,6 +196,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Authors\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Borrowers\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Borrowers\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Books\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Pages\Login.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

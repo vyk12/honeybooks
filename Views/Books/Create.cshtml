@@ -1,0 +1,85 @@
+﻿@model BL.Book
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Book</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ISBN)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ISBN)
+            @Html.ValidationMessageFor(model => model.ISBN)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            Author :
+        </div>
+        <div class="editor-field">
+            <select name="AuthorId">
+                @foreach (var author in ViewBag.authors)
+                {
+                    <option value="@author.Aid">@author.FirstName @author.LastName</option>
+                }
+            </select>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SignId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SignId)
+            @Html.ValidationMessageFor(model => model.SignId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PublicationYear)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PublicationYear)
+            @Html.ValidationMessageFor(model => model.PublicationYear)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PublicationInfo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PublicationInfo)
+            @Html.ValidationMessageFor(model => model.PublicationInfo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Pages)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Pages)
+            @Html.ValidationMessageFor(model => model.Pages)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>

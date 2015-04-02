@@ -9,16 +9,117 @@ namespace HoneyBooks.Controllers
 {
     public class BorrowersController : Controller
     {
-        // Action to add a borrower
-        public ActionResult Add()
+        public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
             return View();
         }
 
-        // Action to delete a borrower
-        public void Delete(int id)
-        {
+        //
+        // POST: /Authors/Create
 
+        [HttpPost]
+        public ActionResult Create(FormCollection collection)
+        {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
+            try
+            {
+                BL.Borrower borrower = new BL.Borrower();
+                borrower.FirstName = collection["FirstName"];
+                borrower.LastName = collection["LastName"];
+                borrower.PersonId = collection["PersonId"];
+                borrower.Address = collection["Address"];
+                borrower.Telno = collection["Telno"];
+                borrower.CategoryId = Convert.ToInt32(collection["CategoryId"]);
+                borrower.Username = collection["Username"];
+                borrower.Password = Settings.SecureString(collection["Password"]);
+                
+                borrower.create();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // Action to delete a borrower
+        public ActionResult Delete(int id)
+        {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
+            return RedirectToAction("List");
+        }
+
+        public ActionResult Details(string PersonId)
+        {
+            return View(BL.Borrower.getByPersonId(PersonId));
+        }
+
+        //
+        // GET: /Authors/Edit/5
+
+        public ActionResult Edit(string PersonId)
+        {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
+            Borrower borrower = BL.Borrower.getByPersonId(PersonId);
+            borrower.Password = "";
+            return View(borrower);
+        }
+
+        //
+        // POST: /Authors/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(string PersonId, FormCollection collection)
+        {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("Login", "Pages");
+            }
+
+            try
+            {
+                BL.Borrower borrower = BL.Borrower.getByPersonId(PersonId);
+
+                borrower.FirstName = collection["FirstName"];
+                borrower.LastName = collection["LastName"];
+                borrower.Address = collection["Address"];
+                borrower.Telno = collection["Telno"];
+                borrower.CategoryId = Convert.ToInt32(collection["CategoryId"]);
+                borrower.Username = collection["Username"];
+
+                if (collection["Password"] != "")
+                {
+                    borrower.Password = Settings.SecureString(collection["Password"]);
+                }
+
+                borrower.edit();
+
+                borrower.Password = "";
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // Action to log in as a borrower
@@ -36,6 +137,11 @@ namespace HoneyBooks.Controllers
             ViewBag.borrows = Borrow.getByPersonId(borrower.PersonId);
 
             return View();
+        }
+
+        public ActionResult List()
+        {
+            return View(BL.Borrower.getAll());
         }
 
         // Action to log in a borrower
@@ -77,6 +183,11 @@ namespace HoneyBooks.Controllers
         // Action to renew a loan
         public ActionResult RenewLoan(string barcode)
         {
+            if (Session["Borrower"] == null)
+            {
+                return RedirectToAction("Login");
+            }
+
             Borrower borrower = (Borrower)Session["borrower"];
             Category category = Category.getById(borrower.CategoryId);
 
@@ -84,12 +195,6 @@ namespace HoneyBooks.Controllers
             Session["RenewLoanSuccess"] = true;
 
             return RedirectToAction("Index");
-        }
-
-        // Action to update a borrower
-        public ActionResult Update(int id)
-        {
-            return View();
         }
     }
 }

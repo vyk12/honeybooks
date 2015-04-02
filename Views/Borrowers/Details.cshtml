@@ -1,0 +1,77 @@
+﻿@model BL.Borrower
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Borrower</legend>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.FirstName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+        @Html.ValidationMessageFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.LastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+        @Html.ValidationMessageFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.PersonId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PersonId)
+        @Html.ValidationMessageFor(model => model.PersonId)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Address)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Address)
+        @Html.ValidationMessageFor(model => model.Address)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Telno)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Telno)
+        @Html.ValidationMessageFor(model => model.Telno)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.CategoryId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CategoryId)
+        @Html.ValidationMessageFor(model => model.CategoryId)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Username)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Username)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Password)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Password)
+    </div>
+</fieldset>
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
