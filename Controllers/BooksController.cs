@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BL;
+using System.Web.Script.Serialization;
 
 namespace HoneyBooks.Controllers
 {
@@ -68,12 +69,17 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to delete a book
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string isbn)
         {
             if (Session["User"] == null)
             {
                 return RedirectToAction("Login", "Pages");
             }
+
+            Book book = Book.getByISBN(isbn);
+
+            BookAuthor.delete(book.ISBN);
+            book.delete();
 
             return RedirectToAction("List");
         }
@@ -155,11 +161,21 @@ namespace HoneyBooks.Controllers
 
             if (query != null)
             {
+                int JSON = Convert.ToInt32(Request.QueryString.Get("json"));
                 int searchBy = Convert.ToInt32(Request.QueryString.Get("searchBy"));
 
                 if (searchBy != 0 && searchBy != 1) searchBy = 0;
 
-                ViewBag.books = Book.search(query, searchBy);
+                List<Book> books = Book.search(query, searchBy);
+
+                ViewBag.books = books;
+
+                if (JSON == 1)
+                {
+                    ViewBag.padding = Convert.ToInt32(Request.QueryString.Get("padding"));
+                    ViewBag.JSON = new JavaScriptSerializer().Serialize(books);
+                    return View("JSONSearch");
+                }
             }
 
             return View();

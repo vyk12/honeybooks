@@ -1,4 +1,10 @@
-﻿@{
+﻿@if (ViewBag.JSON != null)
+{
+    Layout = null;
+    @ViewBag.JSON
+}
+
+@{
     ViewBag.Title = "Search";
 }
 

@@ -94,6 +94,10 @@ namespace BL
                     Book book = new Book();
                     book._title = dar["Title"] as string;
                     book._isbn = dar["ISBN"] as string;
+                    book._publicationYear = dar["PublicationYear"] as string;
+                    book._publicationinfo = dar["publicationinfo"] as string;
+                    book._pages = Convert.ToInt32(dar["pages"]);
+                    book._signId = Convert.ToInt32(dar["signId"]);
                     book._author = dar["FirstName"] + " " + dar["LastName"];
                     results.Add(book);
                 }

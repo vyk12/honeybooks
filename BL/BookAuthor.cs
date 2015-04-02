@@ -42,6 +42,56 @@ namespace BL
             return retVal;
         }
 
+        public static void delete(string isbn)
+        {
+            SqlConnection con = new SqlConnection(Settings.ConnectionString);
+
+            SqlCommand cmd = new SqlCommand("DELETE FROM BOOK_AUTHOR WHERE ISBN = @ISBN", con);
+
+            SqlParameter paramISBN = new SqlParameter("ISBN", SqlDbType.VarChar);
+            paramISBN.Value = isbn;
+            cmd.Parameters.Add(paramISBN);
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteScalar();
+            }
+            catch (Exception er)
+            {
+                throw er;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static void delete(int id)
+        {
+            SqlConnection con = new SqlConnection(Settings.ConnectionString);
+
+            SqlCommand cmd = new SqlCommand("DELETE FROM BOOK_AUTHOR WHERE Aid = @Aid", con);
+
+            SqlParameter paramISBN = new SqlParameter("Aid", SqlDbType.Int);
+            paramISBN.Value = id;
+            cmd.Parameters.Add(paramISBN);
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteScalar();
+            }
+            catch (Exception er)
+            {
+                throw er;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
         public static void edit(string ISBN, int Aid)
         {
             SqlConnection con = new SqlConnection(Settings.ConnectionString);

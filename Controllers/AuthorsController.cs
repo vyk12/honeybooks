@@ -117,6 +117,7 @@ namespace HoneyBooks.Controllers
 
             List<BL.Book> books = author.getBooks();
 
+            BL.BookAuthor.delete(author.Aid);
             author.delete();
 
             foreach (var book in books)

@@ -62,13 +62,11 @@ namespace BL
         {
             SqlConnection con = new SqlConnection(Settings.ConnectionString);
 
-            SqlCommand cmdDelBookAuthor = new SqlCommand("DELETE FROM BOOK_AUTHOR WHERE Aid = " + this._Aid, con);
             SqlCommand cmdDelAuthor = new SqlCommand("DELETE FROM AUTHOR WHERE Aid = " + this._Aid, con);
 
             try
             {
                 con.Open();
-                cmdDelBookAuthor.ExecuteScalar();
                 cmdDelAuthor.ExecuteScalar();
             }
             catch (Exception er)

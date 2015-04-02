@@ -1,0 +1,13 @@
+﻿@{
+    Layout = null;
+}
+
+@if (ViewBag.padding == 1)
+{
+    <text>searchCallback(</text>
+}
+@Html.Raw(ViewBag.JSON)
+@if (ViewBag.padding == 1)
+{
+    <text>);</text>
+}
