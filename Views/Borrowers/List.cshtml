@@ -61,6 +61,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { PersonId = item.PersonId }) |
                 @Html.ActionLink("Details", "Details", new { PersonId = item.PersonId }) |
+                @Html.ActionLink("View currently borrowed books", "Index", new { PersonId = item.PersonId }) |
                 @Html.ActionLink("Delete", "Delete", new { PersonId = item.PersonId })
             </td>
         </tr>

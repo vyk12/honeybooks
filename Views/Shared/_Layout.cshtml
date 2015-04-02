@@ -17,6 +17,14 @@
                 {
                     <li>@Html.ActionLink("Log out", "Logout", "Borrowers")</li>
                 }
+                @if (Session["User"] != null)
+                {
+                    <li>@Html.ActionLink("Authors manager", "Index", "Authors")</li>
+                    <li>@Html.ActionLink("Books manager", "Index", "Books")</li>
+                    <li>@Html.ActionLink("Borrowers manager", "List", "Borrowers")</li>
+                    <li>@Html.ActionLink("Users manager", "Index", "Users")</li>
+                    <li>@Html.ActionLink("Log out", "Logout", "Pages")</li>
+                }
             </ul>
         </nav>
     </header>

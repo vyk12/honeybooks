@@ -53,12 +53,15 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to delete a borrower
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string PersonId)
         {
             if (Session["User"] == null)
             {
                 return RedirectToAction("Login", "Pages");
             }
+
+            Borrow.delete(PersonId);
+            Borrower.delete(PersonId);
 
             return RedirectToAction("List");
         }
@@ -123,14 +126,19 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to log in as a borrower
-        public ActionResult Index()
+        public ActionResult Index(string PersonId = "")
         {
-            if (Session["Borrower"] == null)
+            if (Session["Borrower"] == null && Session["User"] == null)
             {
                 return RedirectToAction("Login");
             }
 
-            Borrower borrower = (Borrower)Session["borrower"];
+            Borrower borrower = null;
+
+            if (Session["Borrower"] != null)
+                borrower = (Borrower)Session["Borrower"];
+            else
+                borrower = Borrower.getByPersonId(PersonId);
 
             ViewBag.borrower = borrower;
 
@@ -147,7 +155,7 @@ namespace HoneyBooks.Controllers
         // Action to log in a borrower
         public ActionResult Login()
         {
-            if (Session["borrower"] != null)
+            if (Session["Borrower"] != null)
             {
                 return RedirectToAction("Index");
             }
@@ -181,20 +189,29 @@ namespace HoneyBooks.Controllers
         }
 
         // Action to renew a loan
-        public ActionResult RenewLoan(string barcode)
+        public ActionResult RenewLoan(string barcode, string personId = "")
         {
-            if (Session["Borrower"] == null)
+            if (Session["Borrower"] == null && Session["User"] == null)
             {
                 return RedirectToAction("Login");
             }
 
-            Borrower borrower = (Borrower)Session["borrower"];
+            Borrower borrower = null;
+
+            if (Session["Borrower"] != null)
+                borrower = (Borrower)Session["Borrower"];
+            else
+                borrower = Borrower.getByPersonId(personId);
+
             Category category = Category.getById(borrower.CategoryId);
 
             Borrow.renewLoan(barcode, category.Period);
             Session["RenewLoanSuccess"] = true;
 
-            return RedirectToAction("Index");
+            if (Session["Borrower"] != null)
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Index", new { PersonId = borrower.PersonId });
         }
     }
 }

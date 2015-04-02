@@ -151,9 +151,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Books\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +202,7 @@
     <Content Include="Views\Borrowers\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Books\List.cshtml" />
+    <Content Include="Views\Books\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Pages\Login.cshtml" />
@@ -224,6 +221,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Books\JSONSearch.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Pages\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

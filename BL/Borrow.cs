@@ -118,5 +118,30 @@ namespace BL
                 con.Close();
             }
         }
+
+        public static void delete(string personId)
+        {
+            SqlConnection con = new SqlConnection(Settings.ConnectionString);
+
+            SqlCommand cmd = new SqlCommand("DELETE FROM BORROW WHERE PersonId = @PersonId", con);
+
+            SqlParameter paramPersonId = new SqlParameter("PersonId", SqlDbType.VarChar);
+            paramPersonId.Value = personId;
+            cmd.Parameters.Add(paramPersonId);
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteScalar();
+            }
+            catch (Exception er)
+            {
+                throw er;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }

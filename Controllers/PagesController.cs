@@ -9,6 +9,11 @@ namespace HoneyBooks.Controllers
 {
     public class PagesController : Controller
     {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult Login()
         {
             if (Session["User"] != null)
@@ -35,6 +40,13 @@ namespace HoneyBooks.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Remove("User");
+
+            return RedirectToAction("Index", "Pages");
         }
     }
 }

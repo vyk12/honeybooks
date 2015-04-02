@@ -24,7 +24,7 @@ else
             <td>@borrow.BookTitle</td>
             <td>@borrow.BorrowDate.ToString("MM/dd/yyyy HH:mm")</td>
             <td>@borrow.ToBeReturnedDate.ToString("MM/dd/yyyy HH:mm")</td>
-            <td>@Html.ActionLink("Renew the loan", "RenewLoan", new { barcode = borrow.Barcode })</td>
+            <td>@Html.ActionLink("Renew the loan", "RenewLoan", new { barcode = borrow.Barcode, PersonId = ViewBag.borrower.PersonId })</td>
         </tr>
     }
 </table>

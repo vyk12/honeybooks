@@ -143,13 +143,7 @@ namespace HoneyBooks.Controllers
             }
         }
 
-
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult List()
         {
             return View(BL.Book.getAll());
         }
