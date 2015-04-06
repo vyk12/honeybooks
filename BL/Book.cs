@@ -181,10 +181,15 @@ namespace BL
             string SQL = "SELECT BOOK.*, AUTHOR.FirstName, AUTHOR.LastName FROM BOOK " +
                 "INNER JOIN BOOK_AUTHOR ON BOOK_AUTHOR.ISBN=BOOK.ISBN " +
                 "INNER JOIN AUTHOR ON AUTHOR.Aid = BOOK_AUTHOR.Aid " +
-                "WHERE BOOK.ISBN='" + ISBN + "'";
+                "WHERE BOOK.ISBN=@ISBN";
             Book book = new Book();
             SqlConnection con = new SqlConnection(Settings.ConnectionString);
             SqlCommand cmd = new SqlCommand(SQL, con);
+
+            SqlParameter paramISBN = new SqlParameter("ISBN", SqlDbType.VarChar);
+            paramISBN.Value = ISBN;
+            cmd.Parameters.Add(paramISBN);
+
             try
             {
                 con.Open();

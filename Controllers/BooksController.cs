@@ -17,13 +17,18 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            ViewBag.authors = Author.getAll();
+            try
+            {
+                ViewBag.authors = Author.getAll();
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             return View();
         }
 
-        //
-        // POST: /Authors/Create
 
         [HttpPost]
         public ActionResult Create(FormCollection collection)
@@ -33,10 +38,18 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            ViewBag.authors = Author.getAll();
+            try
+            {
+                ViewBag.authors = Author.getAll();
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             try
             {
+                // Let's create a new book and fill it with form's data
                 Book book = new Book();
 
                 book.Title = collection["Title"] as string;
@@ -48,6 +61,7 @@ namespace HoneyBooks.Controllers
 
                 book.create();
 
+                // The link between the book and its author mus be created
                 BL.BookAuthor.create(book.ISBN, Convert.ToInt32(collection["AuthorId"]));
 
                 return RedirectToAction("Index");
@@ -58,17 +72,25 @@ namespace HoneyBooks.Controllers
             }
         }
 
-        // Action to browse books (either by title or author)
+
         public ActionResult Browse()
         {
             string sortBy = Request.QueryString.Get("sortby");
 
-            ViewBag.books = Book.getAll(sortBy == "author" ? 0 : 1);
+            try
+            {
+                // Let's fetch all books that match the query
+                ViewBag.books = Book.getAll(sortBy == "author" ? 0 : 1);
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             return View();
         }
 
-        // Action to delete a book
+        
         public ActionResult Delete(string isbn)
         {
             if (Session["User"] == null)
@@ -76,23 +98,40 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            Book book = Book.getByISBN(isbn);
+            try
+            {
+                // Let's get the book first
+                Book book = Book.getByISBN(isbn);
 
-            BookAuthor.delete(book.ISBN);
-            book.delete();
+                // Let's delete the link between the book and its author(s)
+                BookAuthor.delete(book.ISBN);
+                
+                // And finally, let's delete the book
+                book.delete();
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             return RedirectToAction("List");
         }
 
-        // Action to get details about a book
+        
         public ActionResult Details(string isbn)
         {
-            ViewBag.book = Book.getByISBN(isbn);
+            try
+            {
+                ViewBag.book = Book.getByISBN(isbn);
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
             return View();
         }
 
-        //
-        // GET: /Authors/Edit/5
 
         public ActionResult Edit(string isbn)
         {
@@ -101,14 +140,23 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            ViewBag.authors = Author.getAll();
-            ViewBag.AuthorId = BookAuthor.getAuthorId(isbn);
+            Book book;
 
-            return View(BL.Book.getByISBN(isbn));
+            try
+            {
+                book = BL.Book.getByISBN(isbn);
+
+                ViewBag.authors = Author.getAll();
+                ViewBag.AuthorId = BookAuthor.getAuthorId(isbn);
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View(book);
         }
 
-        //
-        // POST: /Authors/Edit/5
 
         [HttpPost]
         public ActionResult Edit(string isbn, FormCollection collection)
@@ -118,11 +166,19 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            ViewBag.authors = Author.getAll();
-            ViewBag.AuthorId = BookAuthor.getAuthorId(isbn);
+            try
+            {
+                ViewBag.authors = Author.getAll();
+                ViewBag.AuthorId = BookAuthor.getAuthorId(isbn);
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             try
             {
+                // Let's create a new book and fill it with the form's data
                 BL.Book book = BL.Book.getByISBN(isbn);
 
                 book.Title = collection["Title"] as string;
@@ -133,6 +189,7 @@ namespace HoneyBooks.Controllers
 
                 book.edit();
 
+                // Let's also update the link between the book and its author
                 BL.BookAuthor.edit(book.ISBN, Convert.ToInt32(collection["AuthorId"]));
 
                 return RedirectToAction("Index");
@@ -145,10 +202,21 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Index()
         {
-            return View(BL.Book.getAll());
+            List<Book> books;
+
+            try
+            {
+                books = BL.Book.getAll();
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View(books);
         }
 
-        // Action to look for a book (either by title or author)
+        
         public ActionResult Search()
         {
             string query = Request.QueryString.Get("query");
@@ -158,12 +226,23 @@ namespace HoneyBooks.Controllers
                 int JSON = Convert.ToInt32(Request.QueryString.Get("json"));
                 int searchBy = Convert.ToInt32(Request.QueryString.Get("searchBy"));
 
+                // If the searchBy parameter is invalid, let's assign 0 to it
                 if (searchBy != 0 && searchBy != 1) searchBy = 0;
 
-                List<Book> books = Book.search(query, searchBy);
+                List<Book> books;
+
+                try
+                {
+                    books = Book.search(query, searchBy);
+                }
+                catch
+                {
+                    return View("Error500");
+                }
 
                 ViewBag.books = books;
 
+                // If the client wants a JSON formated output
                 if (JSON == 1)
                 {
                     ViewBag.padding = Convert.ToInt32(Request.QueryString.Get("padding"));
@@ -173,12 +252,6 @@ namespace HoneyBooks.Controllers
             }
 
             return View();
-        }
-
-        // Action to fetch books according to the search query
-        public ActionResult SearchResults()
-        {
-            return View("Search");
         }
     }
 }

@@ -19,8 +19,6 @@ namespace HoneyBooks.Controllers
             return View();
         }
 
-        //
-        // POST: /Authors/Create
 
         [HttpPost]
         public ActionResult Create(FormCollection collection)
@@ -32,7 +30,9 @@ namespace HoneyBooks.Controllers
 
             try
             {
+                // Let's create a new borrower and fill it with form's data
                 BL.Borrower borrower = new BL.Borrower();
+
                 borrower.FirstName = collection["FirstName"];
                 borrower.LastName = collection["LastName"];
                 borrower.PersonId = collection["PersonId"];
@@ -60,19 +60,38 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            Borrow.delete(PersonId);
-            Borrower.delete(PersonId);
+            try
+            {
+                // Let's delete everything the borrower has borrowed
+                Borrow.delete(PersonId);
+
+                // Let's delete the borrower
+                Borrower.delete(PersonId);
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             return RedirectToAction("List");
         }
 
         public ActionResult Details(string PersonId)
         {
-            return View(BL.Borrower.getByPersonId(PersonId));
+            Borrower borrower;
+
+            try
+            {
+                borrower = BL.Borrower.getByPersonId(PersonId);
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View(borrower);
         }
 
-        //
-        // GET: /Authors/Edit/5
 
         public ActionResult Edit(string PersonId)
         {
@@ -81,13 +100,21 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            Borrower borrower = BL.Borrower.getByPersonId(PersonId);
-            borrower.Password = "";
+            Borrower borrower;
+
+            try
+            {
+                borrower = BL.Borrower.getByPersonId(PersonId);
+                borrower.Password = "";
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
             return View(borrower);
         }
 
-        //
-        // POST: /Authors/Edit/5
 
         [HttpPost]
         public ActionResult Edit(string PersonId, FormCollection collection)
@@ -99,6 +126,7 @@ namespace HoneyBooks.Controllers
 
             try
             {
+                // Let's create a new borrower and fill it with form's data
                 BL.Borrower borrower = BL.Borrower.getByPersonId(PersonId);
 
                 borrower.FirstName = collection["FirstName"];
@@ -108,11 +136,13 @@ namespace HoneyBooks.Controllers
                 borrower.CategoryId = Convert.ToInt32(collection["CategoryId"]);
                 borrower.Username = collection["Username"];
 
+                // If the password has been changed, let's update it
                 if (collection["Password"] != "")
                 {
                     borrower.Password = Settings.SecureString(collection["Password"]);
                 }
 
+                // Let's edit the borrower
                 borrower.edit();
 
                 borrower.Password = "";
@@ -125,7 +155,7 @@ namespace HoneyBooks.Controllers
             }
         }
 
-        // Action to log in as a borrower
+
         public ActionResult Index(string PersonId = "")
         {
             if (Session["Borrower"] == null && Session["User"] == null)
@@ -135,24 +165,56 @@ namespace HoneyBooks.Controllers
 
             Borrower borrower = null;
 
+            // If the borrower is in session, let's retrieve it
             if (Session["Borrower"] != null)
+            {
                 borrower = (Borrower)Session["Borrower"];
+            }
+            // If not, let's try to fetch it from database
             else
-                borrower = Borrower.getByPersonId(PersonId);
+            {
+                try
+                {
+                    borrower = Borrower.getByPersonId(PersonId);
+                }
+                catch
+                {
+                    return View("Error500");
+                }
+            }
 
             ViewBag.borrower = borrower;
 
-            ViewBag.borrows = Borrow.getByPersonId(borrower.PersonId);
+            // Let's try to get all borrowed books by the borrower
+            try
+            {
+                ViewBag.borrows = Borrow.getByPersonId(borrower.PersonId);
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             return View();
         }
 
         public ActionResult List()
         {
-            return View(BL.Borrower.getAll());
+            List<Borrower> borrowers;
+
+            try
+            {
+                borrowers = BL.Borrower.getAll();
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View();
         }
 
-        // Action to log in a borrower
+
         public ActionResult Login()
         {
             if (Session["Borrower"] != null)
@@ -165,7 +227,17 @@ namespace HoneyBooks.Controllers
                 string login = Request.Form["username"];
                 string password = Settings.SecureString(Request.Form["password"]);
 
-                Borrower borrower = Borrower.getByLoginAndPasswd(login, password);
+                Borrower borrower = null;
+
+                // Let's try to obtain the requested borrower by its login and password
+                try
+                {
+                    borrower = Borrower.getByLoginAndPasswd(login, password);
+                }
+                catch
+                {
+                    return View("Error500");
+                }
 
                 if (borrower == null)
                 {
@@ -183,12 +255,13 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Logout()
         {
+            // Let's remove the borrower from the session to log him/her out
             Session.Remove("Borrower");
 
             return RedirectToAction("Index", "Books");
         }
 
-        // Action to renew a loan
+
         public ActionResult RenewLoan(string barcode, string personId = "")
         {
             if (Session["Borrower"] == null && Session["User"] == null)
@@ -198,15 +271,46 @@ namespace HoneyBooks.Controllers
 
             Borrower borrower = null;
 
+            // Let's retrieve the borrower from the session
             if (Session["Borrower"] != null)
+            {
                 borrower = (Borrower)Session["Borrower"];
+            }
+            // Otherwise, let's retrieve him/her from the database
             else
-                borrower = Borrower.getByPersonId(personId);
+            {
+                try
+                {
+                    borrower = Borrower.getByPersonId(personId);
+                }
+                catch
+                {
+                    return View("Error500");
+                }
+            }
 
-            Category category = Category.getById(borrower.CategoryId);
+            Category category;
 
-            Borrow.renewLoan(barcode, category.Period);
-            Session["RenewLoanSuccess"] = true;
+            // Let's try to get the borrower's category to get the period of a loan
+            try
+            {
+                category = Category.getById(borrower.CategoryId);
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            // Let's try to renew the loan
+            try
+            {
+                Borrow.renewLoan(barcode, category.Period);
+                Session["RenewLoanSuccess"] = true;
+            }
+            catch
+            {
+                return View("Error500");
+            }
 
             if (Session["Borrower"] != null)
                 return RedirectToAction("Index");

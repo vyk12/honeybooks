@@ -10,11 +10,19 @@ namespace HoneyBooks.Controllers
     {
         public ActionResult Index()
         {
-            return View(BL.Author.getAll());
-        }
+            List<BL.Author> authors;
 
-        //
-        // GET: /Authors/Create
+            try
+            {
+                authors = BL.Author.getAll();
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View(authors);
+        }
 
         public ActionResult Create()
         {
@@ -26,8 +34,6 @@ namespace HoneyBooks.Controllers
             return View();
         }
 
-        //
-        // POST: /Authors/Create
 
         [HttpPost]
         public ActionResult Create(FormCollection collection)
@@ -39,11 +45,13 @@ namespace HoneyBooks.Controllers
 
             try
             {
+                // Let's create a new author and fill it with the form's data
                 BL.Author author = new BL.Author();
                 author.About = collection["About"];
                 author.BirthYear = Convert.ToInt32(collection["BirthYear"]);
                 author.FirstName = collection["FirstName"];
                 author.LastName = collection["LastName"];
+
                 author.save();
 
                 return RedirectToAction("Index");
@@ -54,16 +62,24 @@ namespace HoneyBooks.Controllers
             }
         }
 
-        //
-        // GET: /Authors/Details/5
 
         public ActionResult Details(int id)
         {
-            return View(BL.Author.getByAid(id));
+            BL.Author author;
+
+            // Let's try to get the corresponding author
+            try
+            {
+                author = BL.Author.getByAid(id);
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View(author);
         }
 
-        //
-        // GET: /Authors/Edit/5
 
         public ActionResult Edit(int id)
         {
@@ -72,11 +88,21 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            return View(BL.Author.getByAid(id));
+            BL.Author author;
+
+            // Let's try to get the corresponding author
+            try
+            {
+                author = BL.Author.getByAid(id);
+            }
+            catch
+            {
+                return View("Error500");
+            }
+
+            return View(author);
         }
 
-        //
-        // POST: /Authors/Edit/5
 
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
@@ -88,11 +114,13 @@ namespace HoneyBooks.Controllers
 
             try
             {
+                // Let's create a new author and fill it with the form's data
                 BL.Author author = BL.Author.getByAid(id);
                 author.About = collection["About"];
                 author.BirthYear = Convert.ToInt32(collection["BirthYear"]);
                 author.FirstName = collection["FirstName"];
                 author.LastName = collection["LastName"];
+                
                 author.save();
 
                 return RedirectToAction("Index");
@@ -103,8 +131,6 @@ namespace HoneyBooks.Controllers
             }
         }
 
-        //
-        // GET: /Authors/Delete/5
 
         public ActionResult Delete(int id)
         {
@@ -113,19 +139,32 @@ namespace HoneyBooks.Controllers
                 return RedirectToAction("Login", "Pages");
             }
 
-            BL.Author author = BL.Author.getByAid(id);
-
-            List<BL.Book> books = author.getBooks();
-
-            BL.BookAuthor.delete(author.Aid);
-            author.delete();
-
-            foreach (var book in books)
+            try
             {
-                if (book.onlyBelongsTo(author.Aid))
+                // First, let's get the author
+                BL.Author author = BL.Author.getByAid(id);
+
+                // Then, let's get all his/her books
+                List<BL.Book> books = author.getBooks();
+
+                // Let's delete every links between the author and his/her books
+                BL.BookAuthor.delete(author.Aid);
+                
+                // Let's delete the author
+                author.delete();
+
+                foreach (var book in books)
                 {
-                    book.delete();
+                    // If there isn't any other other attached to the book, it must be deleted
+                    if (book.onlyBelongsTo(author.Aid))
+                    {
+                        book.delete();
+                    }
                 }
+            }
+            catch
+            {
+                return View("Error500");
             }
 
             return RedirectToAction("Index");

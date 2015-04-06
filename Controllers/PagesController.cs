@@ -26,8 +26,19 @@ namespace HoneyBooks.Controllers
                 string login = Request.Form["username"];
                 string password = Settings.SecureString(Request.Form["password"]);
 
-                User user = BL.User.getByLoginAndPasswd(login, password);
+                User user = null;
 
+                // Let's try to retrieve user from database
+                try
+                {
+                    user = BL.User.getByLoginAndPasswd(login, password);
+                }
+                catch
+                {
+                    return View("Error500");
+                }
+
+                // If no user has been found, it means the client specified wrong information
                 if (user == null)
                 {
                     ViewBag.error = "Please verify your login information.";
@@ -44,6 +55,7 @@ namespace HoneyBooks.Controllers
 
         public ActionResult Logout()
         {
+            // Let's remove the user from the session to log him/her out
             Session.Remove("User");
 
             return RedirectToAction("Index", "Pages");
